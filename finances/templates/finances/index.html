@@ -9,16 +9,17 @@
 {% endif %}
 <hr>
 
+<p>Contas</p>
+{% if num_contas == 0 %}
+    <p>Você não possui contas. <a href="{% url 'finances:nova_conta' user_id=user.id %}">Clique aqui</a> para criar a primeira.</p>
+{% else %}
+    <p>Você possui <strong>{{ num_contas }}</strong> conta{{ num_contas|pluralize }}. <a href="{% url 'finances:contas_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de contas</p>
+{% endif %}
+
 <p>Transações</p>
 {% if num_transacoes == 0 %}
-    <p>Você não possui transações. <a href="#">Clique aqui</a> para criar a primeira.</p>
+    <p>Você não possui transações. <a href="{% url 'finances:nova_transacao' user_id=user.id %}">Clique aqui</a> para criar a primeira.</p>
 {% else %}
     <p>Você realizou <strong>{{ num_transacoes }}</strong> transações. <a href="{% url 'finances:transacoes_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de transações</p>
 {% endif %}
 
-<p>Contas</p>
-{% if num_contas == 0 %}
-    <p>Você não possui contas. <a href="#">Clique aqui</a> para criar a primeira.</p>
-{% else %}
-    <p>Você possui <strong>{{ num_contas }}</strong> contas. <a href="{% url 'finances:contas_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de contas</p>
-{% endif %}

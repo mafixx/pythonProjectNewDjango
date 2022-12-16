@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 
 from django.shortcuts import render
 from django.urls import reverse
+from django.db.models import Q
 
 from .models import Transacao, ContaFinanceira
 
@@ -26,7 +27,21 @@ def index(request):
 
 
 def transacoes_por_usuario(request, user_id):
-    return render(request, "finances/transacoes_por_usuario.html")
+    # Transacao.ContaFinanceira.usuario
+
+    todas_transacoes = Transacao.objects.filter(
+        conta_debito__usuario=request.user
+    )
+
+    context = {
+        "todas_transacoes": todas_transacoes
+    }
+
+    return render(
+        request,
+        "finances/transacoes_por_usuario.html",
+        context
+    )
 
 
 def contas_por_usuario(request, user_id):
@@ -94,6 +109,24 @@ def nova_transacao(request, user_id):
             return render(request, "finances/nova_transacao.html", context)
 
         valor_transacao = request.POST.get("valor_transacao")
+        valor_transacao = valor_transacao.replace(",", ".")
+        valor_transacao = float(valor_transacao)
+
+        conta_debitada = ContaFinanceira.objects.get(pk=conta_debitada_id)
+        conta_creditada = ContaFinanceira.objects.get(pk=conta_creditada_id)
+
+        conta_debitada.saldo -= valor_transacao
+        conta_creditada.saldo += valor_transacao
+
+        transacao = Transacao(
+            conta_debito=conta_debitada,
+            conta_credito=conta_creditada,
+            valor=valor_transacao
+        )
+
+        transacao.save()
+        conta_debitada.save()
+        conta_creditada.save()
 
         return HttpResponseRedirect(
             reverse(
@@ -101,3 +134,22 @@ def nova_transacao(request, user_id):
                 args=(request.user.id,)
             )
         )
+
+
+def detalhe_conta(request, user_id, conta_id):
+
+    conta = ContaFinanceira.objects.get(pk=conta_id)
+    transacoes = Transacao.objects.filter(
+        Q(conta_debito=conta) | Q(conta_credito=conta)
+    )
+
+    context = {
+        "conta": conta,
+        "transacoes": transacoes
+               }
+
+    return render(
+        request,
+        "finances/detalhe_conta.html",
+        context
+    )

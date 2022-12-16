@@ -2,5 +2,24 @@
 
 {% block content %}
     <h3>Transações de {{ user.username }}</h3>
-
+    <a href="{% url 'finances:index' %}">Voltar para a página principal</a><br>
+    <a href="{% url 'finances:nova_transacao' user.id %}">Criar nova transação</a><br>
+    <hr>
+    <table style="border-style: solid;">
+        <tr>
+            <th>Conta debitada</th>
+            <th>Conta creditada</th>
+            <th>Valor da transação</th>
+            <th>Data e hora</th>
+        </tr>
+        <tr>
+            {% for transacao in todas_transacoes %}
+        <tr>
+            <td><a href="{% url 'finances:detalhe_conta' user.id transacao.conta_debito.id %}">{{ transacao.conta_debito.nome }}</a></td>
+            <td><a href="{% url 'finances:detalhe_conta' user.id transacao.conta_credito.id %}">{{ transacao.conta_credito.nome }}</a></td>
+            <td>R$ {{ transacao.valor }}</td>
+            <td>{{ transacao.criado_em|date:"d/m/Y" }}</td>
+        </tr>
+            {% endfor %}
+    </table>
 {% endblock %}

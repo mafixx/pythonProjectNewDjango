@@ -14,7 +14,6 @@ class ContaFinanceira(models.Model):
 
 
 class Transacao(models.Model):
-
     # Quando temos chaves estrangeiras em uma model que referenciam
     # o mesmo campo na model relacionada, precisamos informar o argumento
     # 'related_name', pois senão, o Django não consegue diferenciar

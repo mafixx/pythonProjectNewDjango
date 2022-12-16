@@ -18,8 +18,8 @@
 
 <p>Transações</p>
 {% if num_transacoes == 0 %}
-    <p>Você não possui transações. <a href="{% url 'finances:nova_transacao' user_id=user.id %}">Clique aqui</a> para criar a primeira.</p>
+    <p>Você não possui transações. <a href="{% url 'finances:nova_transacao' user.id %}">Clique aqui</a> para criar a primeira.</p>
 {% else %}
-    <p>Você realizou <strong>{{ num_transacoes }}</strong> transações. <a href="{% url 'finances:transacoes_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de transações</p>
+    <p>Você realizou <strong>{{ num_transacoes }}</strong> transaç{{ num_transacoes|pluralize:'ão,ões' }}. <a href="{% url 'finances:transacoes_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de transações</p>
 {% endif %}
 

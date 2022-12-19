@@ -1,25 +1,13 @@
-<h1>Finanças Pessoais</h1>
+{% extends 'template_base.html' %}
 
-{% if user.is_authenticated %}
-    <p>Você está logado como {{ user.username }}</p>
-    <a href="{% url 'logout' %}">Deslogar</a>
-{% else %}
-    <p>Você não está logado</p>
-    <a href="{% url 'login' %}">Logar</a>
-{% endif %}
-<hr>
+{% block content %}
 
-<p>Contas</p>
-{% if num_contas == 0 %}
-    <p>Você não possui contas. <a href="{% url 'finances:nova_conta' user_id=user.id %}">Clique aqui</a> para criar a primeira.</p>
-{% else %}
-    <p>Você possui <strong>{{ num_contas }}</strong> conta{{ num_contas|pluralize }}. <a href="{% url 'finances:contas_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de contas</p>
-{% endif %}
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <h1>Finanças Pessoais</h1>
+        </div>
+    </div>
+    <hr>
 
-<p>Transações</p>
-{% if num_transacoes == 0 %}
-    <p>Você não possui transações. <a href="{% url 'finances:nova_transacao' user.id %}">Clique aqui</a> para criar a primeira.</p>
-{% else %}
-    <p>Você realizou <strong>{{ num_transacoes }}</strong> transaç{{ num_transacoes|pluralize:'ão,ões' }}. <a href="{% url 'finances:transacoes_por_usuario' user_id=user.id %}">Clique aqui</a> para visualizar a página de transações</p>
-{% endif %}
 
+{% endblock content %}

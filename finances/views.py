@@ -1,5 +1,5 @@
-from django.http import HttpResponseRedirect
-
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.db.models import Q
@@ -7,28 +7,15 @@ from django.db.models import Q
 from .models import Transacao, ContaFinanceira
 
 
+@login_required
 def index(request):
-    num_transacoes = Transacao.objects.filter(
-        conta_debito__usuario=request.user
-    ).count()
-
-    num_contas = ContaFinanceira.objects.filter(
-        usuario=request.user
-    ).count()
-
-    context = {
-        "num_transacoes": num_transacoes,
-        "num_contas": num_contas
-    }
 
     return render(
-        request, "finances/index.html", context
-    )
+        request, "finances/index.html")
 
 
-def transacoes_por_usuario(request, user_id):
-    # Transacao.ContaFinanceira.usuario
-
+@login_required
+def transacoes_por_usuario(request):
     todas_transacoes = Transacao.objects.filter(
         conta_debito__usuario=request.user
     )
@@ -44,7 +31,8 @@ def transacoes_por_usuario(request, user_id):
     )
 
 
-def contas_por_usuario(request, user_id):
+@login_required
+def contas_por_usuario(request):
     todas_contas = ContaFinanceira.objects.filter(
         usuario=request.user
     )
@@ -60,9 +48,9 @@ def contas_por_usuario(request, user_id):
     )
 
 
-def nova_conta(request, user_id):
+@login_required
+def nova_conta(request):
     if request.method == "GET":
-
         return render(request, "finances/nova_conta.html")
 
     elif request.method == "POST":
@@ -75,11 +63,12 @@ def nova_conta(request, user_id):
         nova_conta.save()
 
         return HttpResponseRedirect(
-            reverse("finances:contas_por_usuario", args=(request.user.id,))
+            reverse("finances:contas_por_usuario", )
         )
 
 
-def nova_transacao(request, user_id):
+@login_required
+def nova_transacao(request):
     contas_do_usuario = ContaFinanceira.objects.filter(
         usuario=request.user
     )
@@ -97,12 +86,13 @@ def nova_transacao(request, user_id):
         )
 
     elif request.method == "POST":
+
         conta_debitada_id = int(request.POST.get("conta_debitada_id"))
         conta_creditada_id = int(request.POST.get("conta_creditada_id"))
 
         if conta_debitada_id == conta_creditada_id:
             context = {
-                "erro": "Você não pode definir a mesma conta como débito e crédito.",
+                "erro": "Você não pode definir a mesma conta como débito e crédito",
                 "contas_do_usuario": contas_do_usuario
             }
 
@@ -129,16 +119,17 @@ def nova_transacao(request, user_id):
         conta_creditada.save()
 
         return HttpResponseRedirect(
-            reverse(
-                "finances:transacoes_por_usuario",
-                args=(request.user.id,)
-            )
+            reverse("finances:transacoes_por_usuario", )
         )
 
 
-def detalhe_conta(request, user_id, conta_id):
-
+@login_required
+def detalhe_conta(request, conta_id):
     conta = ContaFinanceira.objects.get(pk=conta_id)
+
+    if conta.usuario != request.user:
+        return HttpResponse("Você não tem acesso a essa página", status=401)
+
     transacoes = Transacao.objects.filter(
         Q(conta_debito=conta) | Q(conta_credito=conta)
     )
@@ -146,10 +137,28 @@ def detalhe_conta(request, user_id, conta_id):
     context = {
         "conta": conta,
         "transacoes": transacoes
-               }
+    }
 
     return render(
         request,
         "finances/detalhe_conta.html",
         context
     )
+
+@login_required
+def perfil_usuario(request):
+    num_transacoes = Transacao.objects.filter(
+        conta_debito__usuario=request.user
+    ).count()
+
+    num_contas = ContaFinanceira.objects.filter(
+        usuario=request.user
+    ).count()
+
+    context = {
+        "num_transacoes": num_transacoes,
+        "num_contas": num_contas
+    }
+
+    return render(
+        request, "finances/perfil_usuario.html", context)

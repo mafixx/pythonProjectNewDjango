@@ -134,5 +134,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/finances'
 
+LOGIN_URL = '/accounts/login'
+
+
 # Exibe o e-mail do reset de senha no console
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

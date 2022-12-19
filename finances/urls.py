@@ -7,6 +7,7 @@ from .views import (
     nova_conta,
     nova_transacao,
     detalhe_conta,
+    perfil_usuario
 )
 
 app_name = "finances"
@@ -14,28 +15,33 @@ app_name = "finances"
 urlpatterns = [
     path("", index, name="index"),
     path(
-        "<int:user_id>/transacoes",
+        "transactions/",
         transacoes_por_usuario,
         name="transacoes_por_usuario"
     ),
     path(
-        "<int:user_id>/contas",
+        "accounts/",
         contas_por_usuario,
         name="contas_por_usuario"
     ),
     path(
-        "<int:user_id>/contas/nova",
+        "accounts/new/",
         nova_conta,
         name="nova_conta"
     ),
     path(
-        "<int:user_id>/transacoes/nova",
+        "transactions/new/",
         nova_transacao,
         name="nova_transacao"
     ),
     path(
-        "<int:user_id>/contas/<int:conta_id>",
+        "accounts/<int:conta_id>/",
         detalhe_conta,
         name="detalhe_conta"
+    ),
+    path(
+        "perfil/",
+        perfil_usuario,
+        name="perfil_usuario"
     )
 ]

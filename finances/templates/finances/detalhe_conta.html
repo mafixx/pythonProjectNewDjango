@@ -24,6 +24,12 @@
             Última atualização: {{ conta.atualizado_em|date:"d/m/Y" }}
         </div>
     </div>
+    
+    <div class="row">
+        <div class="col">
+            <a href="{% url 'finances:editar_conta' conta.id %}">Editar contas</a>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col d-flex justify-content-center">

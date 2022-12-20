@@ -1,7 +1,11 @@
 {% extends 'template_base.html' %}
 
 {% block content %}
-
+<style>
+    *{
+        color: black;
+    }
+</style>
 {% if form.errors %}
     <div class="row">
         <div class="col">
@@ -33,7 +37,7 @@
     <div class="row justify-content-center">
         <div class="col-3">
             <div class="form-floating my-2">
-                <input type="text" name="username" id="username" class="form-control" placeholder="Informe o usuário" required>
+                <input style="text-color: red" type="text" name="username" id="username" class="form-control" placeholder="Informe o usuário" required>
                 <label for="username" class="form-label">Usuário</label>
             </div>
         </div>
@@ -55,11 +59,12 @@
             <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
         </div>
     </div>
+    <br>
     <div class="row">
-        <div class="col d-flex justify-content-end">
+        <div class="d-flex justify-content-center">
             <a href="#">Criar conta</a>
         </div>
-        <div class="col d-flex justify-content-start">
+        <div class="d-flex justify-content-center">
             <a href="{% url 'password_reset' %}">Recuperar a senha</a>
         </div>
     </div>

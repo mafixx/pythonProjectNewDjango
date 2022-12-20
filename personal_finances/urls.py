@@ -12,8 +12,12 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico"), permanent=True)),
+<link rel="shortcut icon" href="{% load static 'favicon.ico' %}">
+
 """
 from django.contrib import admin
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic import RedirectView
 

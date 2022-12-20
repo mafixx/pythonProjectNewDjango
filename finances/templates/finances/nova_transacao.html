@@ -10,7 +10,7 @@
 
   <form action="" method="post">
     {% csrf_token %}
-    <table style="border-style: solid">
+    <table style="border-style: double; border-color: white">
       <tr>
         <th>Conta a ser debitada</th>
         <th>Conta a ser creditada</th>
@@ -37,7 +37,8 @@
       </tr>
     </table>
       <br>
-      <input type="submit" value="Cadastrar Transação">
-      
-  </form>
+      <div class="col col-3 d-flex justify-content-end">
+        <input type="submit" value="Cadastrar Transação" class="btn btn-success btn-sm">
+      </div>
+    </form>
 {% endblock %}

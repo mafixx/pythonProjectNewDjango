@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
 
     <!-- Bootstrap CSS -->
     <!-- https://cdnjs.com/libraries/twitter-bootstrap/5.0.0-beta1 -->
@@ -18,8 +19,68 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
     />
-
-    <title>Hello, world!</title>
+    <!-- Animation text -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  <style>
+    *{
+      color: white;
+      overflow: hidden;
+    }
+    body {
+      background-color: #FF3CAC;
+      background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+      height: 100vh; 
+    }
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    input{
+      color: black;
+    }
+    a.nav-link{
+      color: #5726e3;
+    }
+    a{
+      color: skyblue;
+    }
+    select, option{
+      color: black;
+    }
+    h2{
+      filter: drop-shadow(5px 5px 4px #FFFFFF);
+      animation: animated_text 2s ease-in-out infinite;
+      color: white;
+    }
+    @keyframes pulse {
+      0% {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+      }
+      50% {
+      -webkit-transform: scale3d(1.05,1.05,1.05);
+      transform: scale3d(1.05,1.05,1.05);
+      }
+      100% {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+      }
+    }
+  </style>
+  
+    <title>Personal Finances</title>
   </head>
   <body>
 
@@ -60,8 +121,30 @@
             {% block content %}{% endblock content %}
         </main>
     </div>
-
-    <footer></footer>
+    <br>
+    <footer>
+      <h2 class="animate__animated animate__pulse" align="center"></h2>
+      <script>
+        const currentTime = () => {
+            const el = document.querySelector("h2");
+    
+            let date = new Date();
+            let hh = date.getHours();
+            let mm = date.getMinutes();
+            let ss = date.getSeconds();
+    
+            hh = hh < 10 ? `0${hh}` : hh;
+            mm = mm < 10 ? `0${mm}` : mm;
+            ss = ss < 10 ? `0${ss}` : ss;
+            
+            let time = `${hh}:${mm}:${ss}`;
+            el.innerText = time;
+        }
+    
+        currentTime();
+        setInterval(currentTime, 1000);
+    </script>
+    </footer>
 
     <!-- Optional JavaScript; choose one of the two! -->
 

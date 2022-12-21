@@ -202,5 +202,5 @@ def criar_usuario(request):
 
 
         return HttpResponseRedirect(
-            reverse("login",)
+            reverse("login")
         )

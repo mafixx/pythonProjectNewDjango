@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.db.models import Q
+from django.contrib.auth.models import User
+
 
 from .models import Transacao, ContaFinanceira
 
@@ -178,3 +180,27 @@ def editar_conta(request, conta_id):
         conta.save()
 
         return HttpResponseRedirect(reverse("finances:detalhe_conta", args=(conta.id,)))
+
+def criar_usuario(request):
+    if request.method == "GET":
+        return render(request, "finances/criar_usuario.html")
+
+    elif request.method == "POST":
+        username = request.POST.get("username")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        User.objects.create_user(
+            username=username, 
+            first_name=first_name, 
+            last_name=last_name, 
+            email=email, 
+            password=password
+        )
+
+
+        return HttpResponseRedirect(
+            reverse("login",)
+        )
